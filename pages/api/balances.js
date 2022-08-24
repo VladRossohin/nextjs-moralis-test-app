@@ -2,7 +2,7 @@ import Moralis from "moralis";
 
 export default async function handler(req, res) {
   await Moralis.start({
-    apiKey: process.env.MORALIS_API_KEY,
+    apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY,
   });
 
   const address = "0x6cA037dbd5d6117496393F5653F47B33022EDb81";

@@ -12,7 +12,7 @@ function Native({ nativeBalance, address, transactions }) {
 
 export async function getServerSideProps(context) {
   await Moralis.start({
-    apiKey: process.env.MORALIS_API_KEY,
+    apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY,
   });
 
   const address = "0x1D6176510cAD158F1EF46Cf9cA54aE0593D99c9c";
