@@ -19,28 +19,29 @@ export default NextAuth({
         },
       },
       async authorize(credentials) {
-        console.log("authorize");
         try {
-          console.log(credentials);
           const { message, signature } = credentials;
-
-          console.log("process.env.NEXT_PUBLIC_MORALIS_API_KEY");
-          console.log(process.env.NEXT_PUBLIC_MORALIS_API_KEY);
 
           await Moralis.start({
             apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY,
           });
 
-          const { address, profileId } = await Moralis.Auth.verify({
-            message,
-            signature,
-            network: "evm",
-          }).raw;
+          const result = (
+            await Moralis.Auth.verify({
+              message,
+              signature,
+              network: "evm",
+            })
+          ).raw;
+
+          const address = result.address;
+          const profileId = result.profileId;
 
           const user = { address, profileId, signature };
           return user;
         } catch (err) {
-          console.log(err);
+          console.log("ERROR");
+          console.error(err);
           return null;
         }
       },
@@ -48,7 +49,10 @@ export default NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }) {
-      user && (token.user = user);
+      if (user) {
+        token.user = user;
+      }
+
       return token;
     },
     async session({ session, token }) {

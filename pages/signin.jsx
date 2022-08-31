@@ -13,10 +13,6 @@ function SignIn() {
   const { push } = useRouter();
 
   const handleAuth = async () => {
-    console.log(process.env.NEXT_PUBLIC_AUTH_URL);
-    console.log(process.env.NEXT_PUBLIC_APP_DOMAIN);
-    console.log(process.env.NEXT_PUBLIC_MORALIS_API_KEY);
-    console.log(process.env.NEXT_PUBLIC_AUTH_SECRET);
     if (isConnected) {
       await disconnectAsync();
     }
@@ -24,11 +20,6 @@ function SignIn() {
     const { account, chain } = await connectAsync({
       connector: new MetaMaskConnector(),
     });
-
-    console.log("connected");
-
-    console.log(account);
-    console.log(chain);
 
     const userData = {
       address: account,
@@ -43,10 +34,8 @@ function SignIn() {
     });
 
     const message = data.message;
-    console.log(message);
 
     const signature = await signMessageAsync({ message });
-    console.log(signature);
 
     const { url } = await signIn("credentials", {
       message,
@@ -54,8 +43,6 @@ function SignIn() {
       redirect: false,
       callbackUrl: "/user",
     });
-
-    console.log(url);
 
     push(url);
   };
